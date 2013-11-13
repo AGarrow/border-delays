@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  wday: 1
+  hour: 1
+  title: MyString
+  location: MyString
+  delay: 1
+
+two:
+  wday: 1
+  hour: 1
+  title: MyString
+  location: MyString
+  delay: 1

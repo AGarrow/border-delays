@@ -1,0 +1,17 @@
+<%= form_for(@wait_time) do |f| %>
+  <% if @wait_time.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@wait_time.errors.count, "error") %> prohibited this wait_time from being saved:</h2>
+
+      <ul>
+      <% @wait_time.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

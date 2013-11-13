@@ -1,0 +1,28 @@
+<h1>Listing wait_times</h1>
+
+<table class="table table-bordered">
+  <tr>
+    <th>Crossing</th>
+    <th>Location</th>
+    <th>Bound For:</th>
+    <th>Wait Time</th>
+    <th>Commercial?</th>
+    <th> weekday </th>
+  </tr>
+
+<% @wait_times.each do |wait_time| %>
+  <tr>
+    <td><%= wait_time.title %></td>
+    <td><%= wait_time.location %></td>
+    <td><%= wait_time.bound %></td>
+    <td><%= wait_time.duration %></td>
+    <td><%= wait_time.commercial %></td>
+    <td><%= wait_time.wday %></td>
+    <td><%= wait_time.hour %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Wait time', new_wait_time_path %>

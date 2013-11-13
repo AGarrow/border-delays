@@ -1,0 +1,69 @@
+<h2>Average Wait Times for <%= @crossing.title %> </h2>
+<h4> <%= @crossing.location %> </h4>
+</br>
+<h3> Canada Bound <h3>
+<h5> Travellers </h5>
+<table class = "table table-bordered">
+  <tr>
+    <th>Day</th>
+    <th>Time</th>
+    <th> Delay</th>
+  </tr>
+  <% @traveller_canada.each do |average| %>
+    <tr>
+      <td><%= weekday(average.wday) %></td>
+      <td><%= clockTime(average.hour) %></td>
+      <td><%= average.delay %> minutes</td>
+    </tr>
+  <% end %>
+</table>
+
+<h5>Commercial</h5>
+<table class = "table table-bordered">
+  <tr>
+    <th>Day</th>
+    <th>Time</th>
+    <th> Delay</th>
+  </tr>
+  <% @commercial_canada.each do |average| %>
+    <tr>
+      <td><%= weekday(average.wday) %></td>
+      <td><%= clockTime(average.hour) %></td>
+      <td><%= average.delay %> minutes</td>
+    </tr>
+  <% end %>
+</table>
+
+<hr></hr>
+<h3> USA Bound <h3>
+<h5> Travellers </h5>
+<table class = "table table-bordered">
+  <tr>
+    <th>Day</th>
+    <th>Time</th>
+    <th> Delay</th>
+  </tr>
+  <% @traveller_us.each do |average| %>
+    <tr>
+      <td><%= weekday(average.wday) %></td>
+      <td><%= clockTime(average.hour) %></td>
+      <td><%= average.delay %> minutes</td>
+    </tr>
+  <% end %>
+</table>
+
+<h5>Commercial</h5>
+<table class = "table table-bordered">
+  <tr>
+    <th>Day</th>
+    <th>Time</th>
+    <th> Delay</th>
+  </tr>
+  <% @commercial_us.each do |average| %>
+    <tr>
+      <td><%= weekday(average.wday) %></td>
+      <td><%= clockTime(average.hour) %></td>
+      <td><%= average.delay %> minutes</td>
+    </tr>
+  <% end %>
+</table>
