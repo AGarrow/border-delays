@@ -1,0 +1,50 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Wday:</b>
+  <%= @average.wday %>
+</p>
+
+<p>
+  <b>Hour:</b>
+  <%= @average.hour %>
+</p>
+
+<p>
+  <b>Title:</b>
+  <%= @average.title %>
+</p>
+
+<p>
+  <b>Location:</b>
+  <%= @average.location %>
+</p>
+
+<p>
+  <b>Delay:</b>
+  <%= @average.delay %>
+</p>
+
+<table class= "table table-bordered">
+  <tr>
+    <th>Title</th>
+    <th>Location</th>
+    <th>Duration</th>
+    <th>Bound</th>
+    <th>Commercial</th>
+  </tr>
+
+  <% @wait_times.each do |wait_time| %>
+    <tr>
+      <td><%= wait_time.title %></td>
+      <td><%= wait_time.location %></td>
+      <td><%= wait_time.duration %></td>
+      <td><%= wait_time.bound %></td>
+      <td><%= wait_time.commercial %></td>
+    </tr>
+  <% end %>
+</table>
+
+
+<%= link_to 'Edit', edit_average_path(@average) %> |
+<%= link_to 'Back', averages_path %>

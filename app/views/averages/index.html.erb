@@ -1,0 +1,33 @@
+<h1>Listing averages</h1>
+
+<table class="table table-bordered">
+  <tr>
+    <th>Wday</th>
+    <th>Hour</th>
+    <th>Title</th>
+    <th>Location</th>
+    <th>Bound</th>
+    <th>Delay</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @averages.each do |average| %>
+  <tr>
+    <td><%= average.wday %></td>
+    <td><%= average.hour %></td>
+    <td><%= average.crossing.title %></td>
+    <td><%= average.crossing.location %></td>
+    <td><%= average.bound %></td>
+    <td><%= average.delay %></td>
+    <td><%= link_to 'Show', average %></td>
+    <td><%= link_to 'Edit', edit_average_path(average) %></td>
+    <td><%= link_to 'Destroy', average, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Average', new_average_path %>
