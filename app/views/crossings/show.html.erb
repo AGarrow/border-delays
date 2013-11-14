@@ -1,69 +1,58 @@
 <h2>Average Wait Times for <%= @crossing.title %> </h2>
 <h4> <%= @crossing.location %> </h4>
 </br>
-<h3> Canada Bound <h3>
-<h5> Travellers </h5>
-<table class = "table table-bordered">
-  <tr>
-    <th>Day</th>
-    <th>Time</th>
-    <th> Delay</th>
-  </tr>
-  <% @traveller_canada.each do |average| %>
-    <tr>
-      <td><%= weekday(average.wday) %></td>
-      <td><%= clockTime(average.hour) %></td>
-      <td><%= average.delay %> minutes</td>
-    </tr>
-  <% end %>
-</table>
 
-<h5>Commercial</h5>
-<table class = "table table-bordered">
-  <tr>
-    <th>Day</th>
-    <th>Time</th>
-    <th> Delay</th>
-  </tr>
-  <% @commercial_canada.each do |average| %>
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#canada_bound" data-toggle="tab">Canada Bound</a></li>
+  <li><a href="#usa_bound" data-toggle="tab">USA Bound</a></li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane active" id="canada_bound">
+    <h3> Canada Bound </h3>
+    <table class = "table table-bordered">
+      <tr>
+        <th>Day</th>
+        <th>Time</th>
+        <th>Traveller Delay</th>
+        <th>Commercial Delay</th>
+      </tr>
+      <% @traveller_canada.each do |average| %>
+        <tr>
+          <td><%= weekday(average.wday) %></td>
+          <td><%= clockTime(average.hour) %></td>
+          <td><%= average.delay %> minutes</td>
+          <td><%= @commercial_canada.where(:wday => average.wday, :hour => average.hour).first.delay %> minutes</td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+  <div class="tab-pane" id="usa_bound">
+  <h3> USA Bound </h3>
+  <table class = "table table-bordered">
     <tr>
-      <td><%= weekday(average.wday) %></td>
-      <td><%= clockTime(average.hour) %></td>
-      <td><%= average.delay %> minutes</td>
+      <th>Day</th>
+      <th>Time</th>
+      <th>Traveller Delay</th>
+      <th>Commercial Delay</th>
     </tr>
-  <% end %>
-</table>
+    <% @traveller_us.each do |average| %>
+      <tr>
+        <td><%= weekday(average.wday) %></td>
+        <td><%= clockTime(average.hour) %></td>
+        <td><%= average.delay %> minutes</td>
+        <td><%= @commercial_canada.where(:wday => average.wday, :hour => average.hour).first.delay %> minutes</td>
+      </tr>
+    <% end %>
+  </table>
+  </div>
 
-<hr></hr>
-<h3> USA Bound <h3>
-<h5> Travellers </h5>
-<table class = "table table-bordered">
-  <tr>
-    <th>Day</th>
-    <th>Time</th>
-    <th> Delay</th>
-  </tr>
-  <% @traveller_us.each do |average| %>
-    <tr>
-      <td><%= weekday(average.wday) %></td>
-      <td><%= clockTime(average.hour) %></td>
-      <td><%= average.delay %> minutes</td>
-    </tr>
-  <% end %>
-</table>
+</div>
+ 
+<script>
+  $(function () {
+    $('#myTab a:last').tab('show');
+  })
+</script>
 
-<h5>Commercial</h5>
-<table class = "table table-bordered">
-  <tr>
-    <th>Day</th>
-    <th>Time</th>
-    <th> Delay</th>
-  </tr>
-  <% @commercial_us.each do |average| %>
-    <tr>
-      <td><%= weekday(average.wday) %></td>
-      <td><%= clockTime(average.hour) %></td>
-      <td><%= average.delay %> minutes</td>
-    </tr>
-  <% end %>
-</table>
+
+
