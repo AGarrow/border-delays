@@ -1,7 +1,7 @@
 module ApplicationHelper
   WEEKDAYS = %w(Sunday Monday Tuesday Wednesday Thursday Friday Saturday)
   def weekday (int)
-    WEEKDAYS[int - 1]
+    WEEKDAYS[int]
   end
 
   def clockTime (int)
