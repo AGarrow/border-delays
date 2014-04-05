@@ -1,4 +1,6 @@
 BorderTimes::Application.routes.draw do
+  get "static/landing"
+
   resources :crossings
 
 
@@ -7,10 +9,11 @@ BorderTimes::Application.routes.draw do
 
   resources :wait_times
 
-  root :to => 'crossings#index'
+  root :to => 'static#landing'
 
   get '/averages/:title/:commercial' => 'averages#crossing', :as => :crossing_averages
 
+  get 'chart_data', to: 'crossings#chart_data'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

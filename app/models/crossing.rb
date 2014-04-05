@@ -41,6 +41,41 @@ class Crossing < ActiveRecord::Base
     end
   end
 
+  def chart_data(bound, commercial, wday)
+    
+    response = { 
+      :labels => [],
+      :average => [],
+      :recent => []
+    }
+    
+    #get data for average wait times
+    average = self.averages.where(:bound => bound, :commercial => commercial, :wday => wday).sort_by{|av| av.hour}
+    response[:labels] = average.map do |a|    
+      a.hour
+    end
+
+    response[:average] = average.map do |a|  
+      a.delay
+    end
+    
+    #get data for today's wait times
+    days_ago = Time.now.wday > wday.to_i ? Time.now - wday.to_i : 7 - (wday.to_i - Time.now.wday)
+    day = Time.now - days_ago.days
+    recent_times = self.wait_times.where(
+      "created_at > ? AND wday = ? AND commercial = ? AND bound = ?", 
+      day.to_date.beginning_of_day, 
+      wday,
+      commercial,
+      bound
+      )
+    response[:recent] = recent_times.map do |r|
+      r.duration
+    end
+    response
+
+  end
+
   def current_average(bound, commercial)
     average = self.averages.where(:bound => bound, :commercial => commercial)
     if average.empty?
