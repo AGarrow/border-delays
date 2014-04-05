@@ -14,15 +14,26 @@ class CrossingsController < ApplicationController
   # GET /crossings/1.json
   def show
     @crossing = Crossing.find(params[:id])
-    @traveller_us = Average.where(:crossing_id => @crossing.id, :commercial => false, :bound => 'usa')
-    @commercial_us = Average.where(:crossing_id => @crossing.id, :commercial => true, :bound => 'usa')
-    @traveller_canada = Average.where(:crossing_id => @crossing.id, :commercial => false, :bound => 'canada')
-    @commercial_canada = Average.where(:crossing_id => @crossing.id, :commercial => false, :bound => 'canada')
+    @traveller_us = Average.where(:crossing_id => @crossing.id, :commercial => false, :bound => 'usa').order(:wday , :hour)
+    @commercial_us = Average.where(:crossing_id => @crossing.id, :commercial => true, :bound => 'usa').order(:wday , :hour)
+    @traveller_canada = Average.where(:crossing_id => @crossing.id, :commercial => false, :bound => 'canada').order(:wday, :hour)
+    @commercial_canada = Average.where(:crossing_id => @crossing.id, :commercial => false, :bound => 'canada').order(:wday, :hour)
 
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @crossing }
     end
+  end
+
+  def chart_data
+    crossing = Crossing.find(params[:id])
+    data = crossing.chart_data(params[:bound], params[:commercial], params[:wday])
+
+    respond_to do |format|
+      format.js { render json: data}
+      format.json { render json: data}  
+    end
+    
   end
 
   # GET /crossings/new
