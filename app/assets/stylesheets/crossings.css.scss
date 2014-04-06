@@ -1,3 +1,26 @@
 // Place all the styles related to the crossings controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+canvas{
+    width: 90% !important;
+    max-width: 800px;
+    height: auto !important;
+}
+
+.rotate {
+  color:#333;
+  border:0px solid red;
+  writing-mode:tb-rl;
+  -webkit-transform:rotate(90deg);
+  -moz-transform:rotate(90deg);
+  -o-transform: rotate(90deg);
+  white-space:nowrap;
+  display:block;
+  bottom:0;
+  width:5%;
+  height:20px;
+  font-family: ‘Trebuchet MS’, Helvetica, sans-serif;
+  font-weight:normal;
+  text-shadow: 0px 0px 1px #333;
+  text-align: center;
+}
