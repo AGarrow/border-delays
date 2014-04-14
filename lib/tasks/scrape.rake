@@ -16,7 +16,10 @@ end
 
 def scrape(source, bound)
   doc = Nokogiri::HTML(open(source))
-  doc.xpath('//table[@class = "wet-boew-zebra span-6"]//tr')[1..-1].each do |row|
+  crossings = doc.xpath('//table//tr')[1..-1]
+
+
+  crossings.each do |row|
     info, commercial, travellers = row.xpath('.//td')
     title = info.xpath('.//strong').text
     location = info.xpath('./text()')[0].text    
