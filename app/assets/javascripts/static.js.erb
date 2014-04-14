@@ -1,0 +1,75 @@
+
+var borders = {
+
+  // First use provinces as keys 
+  'BC': ['WA', 'ID', 'MT'],
+  'AB': ['MT'],
+  'SK' : ['MT', 'ND'],
+  'MB' : ['ND', 'MN'],
+  'ON' : ['MN', 'MI', 'NY'],
+  'QC' : ['NY', 'VT', 'NH', 'ME'],
+  'NB' : ['ME'],
+
+  // #Then use states as keys
+  'WA' : ['BC'],
+  'ID' : ['BC'],
+  'MT' : ['BC', 'AB', 'SK'],
+  'ND' : ['SK', 'MB'],
+  'MN' : ['MB', 'ON'],
+  'MI' : ['ON'],
+  'NY' : ['ON', 'QC'],
+  'VT' : ['QC'],
+  'NH' : ['QC'],
+  'ME' : ['NB']
+}
+
+var borderButtons = {};
+
+var province_selected = false;
+var state_selected = false;
+
+$(document).ready(function(){
+  assignBordersToButtons();
+  bindBorderButtons();
+})
+
+function assignBordersToButtons(){
+  for( key in borders){
+    borderButtons[key] = [];
+    var buttonIds = borders[key];
+    for(var i = 0; i<buttonIds.length ; i++){
+      var button = document.getElementById(buttonIds[i]);
+      borderButtons[key].push(button);
+    }
+  }
+}
+
+function bindBorderButtons(){
+  for(key in borderButtons){
+    var clickedButton = document.getElementById(key);
+    var inactivatedButtons = borderButtons[key];
+
+    //set all buttons back to their default state
+    clickedButton.addEventListener('click', function(){
+      var buttons = document.getElementsByClassName("border-button");
+      for(var i = 0; i < buttons.length; i++){
+        className = buttons[i].className.replace("btn-success","");
+        className = className.replace("btn-primary","");
+        buttons[i].className = className;
+      }
+    });
+
+    //add "btn-success" to classname of bordering buttons
+    for (var i = 0, n = inactivatedButtons.length; i<n; i++) {
+      var el = inactivatedButtons[i];
+      clickedButton.addEventListener('click', (function(i, el) { 
+        return function() {
+          el.className += " btn-success";
+        }
+      })(i, el), false);
+    }
+  }
+}
+
+
+

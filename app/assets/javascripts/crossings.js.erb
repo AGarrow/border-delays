@@ -1,0 +1,126 @@
+//Get the context of the canvas element we want to select
+
+$(document).ready(function(){
+  var today = <%= Time.now.wday %>;
+  requestData('canada', false, today, "canada_bound_private");
+  requestData('canada', true, today, "canada_bound_commercial");
+  requestData('usa', false, today, "usa_bound_private");
+  requestData('usa', true, today, "usa_bound_commercial");
+
+  $(".day_select_usa").click(function(){
+    requestData('usa', false, this.value, "usa_bound_private" );
+    requestData('usa', true, this.value, "usa_bound_commercial");
+  });
+  $(".day_select_canada").click(function(){
+    requestData('canada', false, this.value, "canada_bound_private");
+    requestData('canada', true, this.value, "canada_bound_commercial");
+  });
+})
+
+
+function requestData(bound, commercial, wday, div_id){
+  <% url = BorderTimes::Application.routes.url_helpers %>
+  inactivateButton(bound, wday);
+  changeLegendText(bound, wday);
+  $.ajax({
+    url: "<%= url.chart_data_path %>",
+    type: "Get",
+    dataType: "json",
+    data: {
+      bound: bound, 
+      id: document.getElementById("title").getAttribute("data-id"),
+      commercial: commercial,
+      wday: wday
+    },
+    success: function(response, textStatus, xhr) {
+      drawChart( response, div_id );
+    }
+  })
+}
+
+function inactivateButton(bound, wday){
+  var buttons;
+  if(bound=='usa'){
+    buttons = document.querySelectorAll(".day_select_usa");    
+  }
+  else{
+    buttons = document.querySelectorAll(".day_select_canada");
+  }
+  for(var i = 0; i < buttons.length; i++){
+    if(buttons[i].value == wday){
+      buttons[i].className += ("active");
+    }
+    else{
+      buttons[i].className = buttons[i].className.replace("active", "");
+    }
+  }
+}
+
+function changeLegendText(bound, wday){
+  var text = getLegendText(wday);
+  if(bound =='usa'){
+    document.getElementById('usa-legend-recent').innerHTML = text;
+  }
+  else{
+    document.getElementById('canada-legend-recent').innerHTML = text;
+  }
+}
+
+function getLegendText(wday){
+  var text;
+  weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  if(wday == <%= Time.now.wday %>){
+    text = "= Today";
+  }
+  else{
+    text = "= Last " + weekdays[wday];
+  }
+  return text;
+}
+
+var charts = {};
+function drawChart(response, div_id){
+  // alert("draw");
+  data = {
+    labels: response.labels,
+    datasets: [
+      {
+        fillColor : "rgba(220,220,220,0.5)",
+        strokeColor : "rgba(220,220,220,1)",
+        pointColor : "rgba(220,220,220,1)",
+        pointStrokeColor : "#fff",
+        data : response.average
+      },
+
+      {
+      fillColor : "rgba(151,187,205,0.5)",
+      strokeColor : "rgba(151,187,205,1)",
+      pointColor : "rgba(151,187,205,1)",
+      pointStrokeColor : "#fff",
+      data : response.recent
+      } 
+    ]
+  }
+
+  options = {
+    scaleOverride : true,
+    scaleSteps : 6,
+    scaleStepWidth : 10,
+    scaleStartValue : 0,
+    scaleFontSize: 8,
+    pointDot: false
+  }
+  var canvas = document.getElementById(div_id);
+  var ctx = canvas.getContext("2d");
+  if(!charts[String(div_id)]){
+    var chart = new Chart(ctx);
+    charts[String(div_id)] = chart;
+    chart.Line(data, options);    
+  }
+  else{
+    var chart = charts[String(div_id)];
+    var myChart = chart.Line(data, options);
+  }
+
+
+}
