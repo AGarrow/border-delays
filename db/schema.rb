@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131113190243) do
+ActiveRecord::Schema.define(:version => 20140408202631) do
 
   create_table "averages", :force => true do |t|
     t.integer  "wday"
@@ -30,6 +30,8 @@ ActiveRecord::Schema.define(:version => 20131113190243) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.string   "time_zone"
+    t.string   "state"
+    t.string   "province"
   end
 
   add_index "crossings", ["title"], :name => "index_crossings_on_title"

@@ -1,9 +1,12 @@
+require 'geography'
 class Crossing < ActiveRecord::Base
-  attr_accessible :location, :title, :time_zone
+  attr_accessible :location, :title, :time_zone, :province, :state
   validates_uniqueness_of :location, :title
   has_many :wait_times
   has_many :averages
   before_create :assign_timezone
+  validates_inclusion_of :state, in: Geography::STATES, allow_blank: false
+  validates_inclusion_of :province, in: Geography::PROVINCES, allow_blank: false
 
   ZONES = {
     "ME" => "Eastern Time (US & Canada)",
@@ -15,6 +18,10 @@ class Crossing < ActiveRecord::Base
     "VT" => "Eastern Time (US & Canada)",
     "WA" => "Pacific Time (US & Canada)",
   }
+
+
+
+
 
   def self.find_or_create(title, location)
     crossing = Crossing.where(:title => title, :location => location).first_or_create
