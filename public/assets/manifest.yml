@@ -3,6 +3,8 @@ rails.png: rails-a3386665c05a2d82f711a4aaa72d247c.png
 rails/index.png: rails-a3386665c05a2d82f711a4aaa72d247c.png
 application.js: application-710eff3195f6636962d644d7b9d7b55b.js
 application/index.js: application-710eff3195f6636962d644d7b9d7b55b.js
+crossings.js: crossings-b6d93138a59b8092a280eb5ec39c682e.js
+crossings/index.js: crossings-b6d93138a59b8092a280eb5ec39c682e.js
 application.css: application-d1d067ddd52ced55a7425f73c9d0f468.css
 application/index.css: application-d1d067ddd52ced55a7425f73c9d0f468.css
 bootstrap-theme.css.map: bootstrap-theme.css-491061052a673c2482d927805fe8ac4c.map
