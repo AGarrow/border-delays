@@ -1,50 +1,11 @@
-<h1>Border Crossings</h1>
-
-<table class = "table table-bordered">
-  <tr>
-    <th>Crossing/Location</th>
-    <th> US Bound </th>
-    <th> Canada Bound </th>
-  
-  </tr>
-
-<% @crossings.each do |crossing| %>
-  <tr>
-    <td>
-      <strong><%= crossing.title %></strong></br>
-      <%= crossing.location %>
-    </td>
-    <td>
-      <strong>Travellers: </strong></br>
-      &nbsp; <i> current: </i>
-      &nbsp;<%= crossing.current_wait('usa', false)  %></br>
-      &nbsp;<i> avg: </i>
-      &nbsp;<%= crossing.current_average('usa', false) %>
-    </br>
-      <strong>Commercial: </strong></br>
-      &nbsp;<i> current: </i>
-      &nbsp;<%= crossing.current_wait('usa', true)  %></br>
-      &nbsp;<i> avg: </i>
-      &nbsp;<%= crossing.current_average('usa', true) %></br>
-    </td>
-    <td>
-      <strong>Travellers: </strong></br>
-      &nbsp;<i> current: </i>
-      &nbsp;<%= crossing.current_wait('canada', false)  %></br>
-      &nbsp;<i> avg: </i>
-      &nbsp;<%= crossing.current_average('canada', false) %></br>
-      <strong>Commercial: </strong></br>
-      &nbsp;<i> current: </i>
-      &nbsp;<%= crossing.current_wait('canada', true)  %></br>
-      &nbsp;<i> avg: </i>
-      &nbsp;<%= crossing.current_average('canada', true) %></br>
-    </td>
-
-    <td><%= link_to 'Show', crossing %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New Crossing', new_crossing_path %>
+<div class="col-md-10 col-md-offset-1">
+  <div class="list-group">
+    <% @crossings.each do |c| %>
+      <a href="<%= crossing_path(c) %>" class="list-group-item">
+        
+        <h4 class="list-group-item-heading"><%= c.title %></h4>
+        <p class="list-group-item-text"><%= c.location%></p>
+      </a>
+    <% end %>
+  </div>
+</div>
