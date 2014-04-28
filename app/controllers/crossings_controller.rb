@@ -2,8 +2,11 @@ class CrossingsController < ApplicationController
   # GET /crossings
   # GET /crossings.json
   def index
+    # @crossings = {}
+    # Crossing.all.each do |c|
+    #   @crossings[c.province][c.state] += c
+    # end
     @crossings = Crossing.all
-
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @crossings }

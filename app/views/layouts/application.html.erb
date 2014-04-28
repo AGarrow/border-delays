@@ -38,7 +38,17 @@
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
   </nav>
-<%= yield %>
-
+  <div class="row">
+    <%= yield %>
+  </div>
+  <div class = "row" id="footer">
+    <div class="container">
+      <p class="credit muted">
+      This website is based information provided by the Government of Canada. (  
+      <a href ="http://travel.gc.ca/vt/dynamic/eng/border-times.aspx">  Canada Bound Source </a>,
+      <a href ="http://travel.gc.ca/travelling/border-times-us">U.S. bound source</a> ) Data has been collected every hour since May 14, 2014. The full source code is available on <a href="https://github.com/AGarrow/border-delays">Github</a> 
+      </p>
+    </div>
+  </div>
 </body>
 </html>
