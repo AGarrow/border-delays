@@ -1,5 +1,5 @@
-== Border Delays
-
+Border Delays
+=============
 Border Delays is an app that scrapes sites listed below once an hour in order to generate graphs displaying the average wait times for different borders at different times.
 
 1. [Canada Border Services Agency](http://www.cbsa-asfc.gc.ca/bwt-taf/menu-eng.html) 
