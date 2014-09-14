@@ -1,4 +1,4 @@
-<div class="col-md-10 col-md-offset-1">
+<!-- <div class="col-md-10 col-md-offset-1">
   <div class="list-group">
     <% @crossings.each do |c| %>
       <a href="<%= crossing_path(c) %>" class="list-group-item">
@@ -7,5 +7,61 @@
         <p class="list-group-item-text"><%= c.location%></p>
       </a>
     <% end %>
+  </div>
+</div> -->
+
+<div class="row">
+  <container class="col-md-8 col-md-offset-2">
+    <div class="btn-group btn-group-justified">
+      <% @provinces.each do |p| %>
+        <div class="btn-group">
+          <button type="button" class="btn btn-default province" data=<%= p %> >
+            <%= p %>
+          </button>
+        </div>
+      <% end %>
+    </div>
+  </container>
+</div>
+
+
+
+<div class="row">
+  <container class="col-md-8 col-md-offset-2">
+    <div class="btn-group btn-group-justified">
+      <% @states.each do |s| %>
+        <div class="btn-group">
+          <button type="button" class="btn btn-default state" data=<%= s %> >
+            <%= s %>
+          </button>
+        </div>
+      <% end %>
+    </div>
+  </container>
+</div>
+
+
+<div class="col-md-8 col-md-offset-2">
+  <div id="crossings" class="list-group">
+
+  </div>
+</div>
+
+<div class="row-fluid" id="chart-container"style="display: none;"> 
+  <div class="col-md-6 col-md-offset-3" >
+    <h4 style="text-align:center" id="chart-title"></h4>
+    <div class="rotate pull-left">Delay (minutes)</div> 
+    <canvas class ="chart" id ="chart"> </canvas>
+    <p style="text-align:center">Time</p>
+    
+  </div>
+  <div>
+    <div class="col-md-3">
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary">U.S.
+          <span class="glyphicon glyphicon-arrow-right"></span>CAN
+        </button>
+      </div>
+    </div>
   </div>
 </div>

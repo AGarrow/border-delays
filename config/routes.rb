@@ -14,6 +14,8 @@ BorderTimes::Application.routes.draw do
   get '/averages/:title/:commercial' => 'averages#crossing', :as => :crossing_averages
 
   get 'chart_data', to: 'crossings#chart_data'
+
+  get 'filter_crossings', to: 'crossings#filter_crossings'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
