@@ -1,11 +1,12 @@
 class StaticController < ApplicationController
   def landing
-    @states = Crossing::Geography::STATES
-    @provinces = Crossing::Geography::PROVINCES
-    @borders = Crossing::Geography::BORDERS
+
+    @states = Geography::STATES
+    @provinces = Geography::PROVINCES
+    @crossings = Crossing.all
     respond_to do |format|
-      format.js {}
-      format.html
+      format.html # index.html.erb
+      format.json { render json: @crossings }
     end
   end
 end

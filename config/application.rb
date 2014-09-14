@@ -59,7 +59,7 @@ module BorderTimes
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
-    config.assets.precompile += ['crossings.js']
+    # config.assets.precompile += ['crossings.js']
     config.assets.enabled = true
     config.assets.paths << "#{Rails.root}/assets/fonts"
     # Precompile additional assets
