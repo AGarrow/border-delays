@@ -26,8 +26,8 @@ $(document).ready( function(){
 
   function populate_crossings(data){
     $("#crossings").html("");
-    if (!data){
-      $("#crossings").append("<h4 class=\"list-group-item-heading\"> Sorry </h4> <p class=\"list-group-item-text\" ")
+    if(data.length == 0){
+      $("#crossings").append("<h4 class=\"list-group-item-heading\"> Sorry </h4> <p class=\"list-group-item-text\"> There are no crossings between this provicne and state </p> ");
     }
     $.each(data, function(i, crossing){
       var list_div = "<a href=\"#\" data-id="+crossing['id']+" class=\"list-group-item crossing-selector\">\
@@ -56,7 +56,7 @@ $(document).ready( function(){
         wday: wday
       },
       success: function(response, textStatus, xhr) {
-        drawChart(response);
+        drawChart(response.data);
       }
     })
   }
@@ -128,9 +128,9 @@ $(document).ready( function(){
       scaleFontSize: 8,
       pointDot: false
     }
+    document.getElementById('chart-container').style.display = "block";
+
     var canvas = document.getElementById("chart");
-    var ctx = canvas.getContext("2d");
-    var chart = new Chart(ctx);
     chart.Line(data, options);    
     }
   
