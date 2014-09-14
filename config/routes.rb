@@ -9,7 +9,7 @@ BorderTimes::Application.routes.draw do
 
   resources :wait_times
 
-  root :to => 'crossings#index'
+  root :to => 'static#landing'
 
   get '/averages/:title/:commercial' => 'averages#crossing', :as => :crossing_averages
 
