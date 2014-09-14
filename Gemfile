@@ -8,6 +8,9 @@ gem 'rails', '3.2.13'
 gem 'pg'
 
 gem 'nokogiri'
+
+# gem 'bootstrap-sass', :github => 'thomas-mcdonald/bootstrap-sass'
+
 # gem 'bootstrap-sass'
 
 # Gems used only for assets and not required

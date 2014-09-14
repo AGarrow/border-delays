@@ -1,3 +1,4 @@
+require 'geography'
 class CrossingsController < ApplicationController
   # GET /crossings
   # GET /crossings.json
@@ -6,6 +7,9 @@ class CrossingsController < ApplicationController
     # Crossing.all.each do |c|
     #   @crossings[c.province][c.state] += c
     # end
+
+    @states = Geography::STATES
+    @provinces = Geography::PROVINCES
     @crossings = Crossing.all
     respond_to do |format|
       format.html # index.html.erb
@@ -13,6 +17,16 @@ class CrossingsController < ApplicationController
     end
   end
 
+  def filter_crossings
+    conditions = {}
+    conditions['state'] = params[:state] if params[:state]
+    conditions['province'] = params[:province] if params[:province]
+    crossings = Crossing.find(:all, :conditions => conditions)
+    if crossings.empty? 
+      crossings.push({:title => "Sorry,", :location => "there are no crossings between #{conditions['state']} and #{conditions['province']}"})
+    end
+    render json: crossings
+  end
   # GET /crossings/1
   # GET /crossings/1.json
   def show
@@ -31,10 +45,10 @@ class CrossingsController < ApplicationController
   def chart_data
     crossing = Crossing.find(params[:id])
     data = crossing.chart_data(params[:bound], params[:commercial], params[:wday])
-
+    response = {title: crossing.title, data: data}
     respond_to do |format|
-      format.js { render json: data}
-      format.json { render json: data}  
+      format.js { render json: response}
+      format.json { render json: response}  
     end
     
   end
