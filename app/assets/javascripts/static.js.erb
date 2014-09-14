@@ -1,75 +1,137 @@
+$(document).ready( function(){
+  var d = new Date();
+  var wday = d.getDay();
+  $(".state").click(function(){
+    $("body").data('state', $(this).attr('data'));
+    $('.state').removeClass('active');
+    $(this).addClass('active');
+    filter_crossings();
+  });
 
-var borders = {
+  $(".province").click(function(){
+    $("body").data('province', $(this).attr('data'));
+    $(".province").removeClass('active');
+    $(this).addClass('active');
+    filter_crossings();    
+  });
 
-  // First use provinces as keys 
-  'BC': ['WA', 'ID', 'MT'],
-  'AB': ['MT'],
-  'SK' : ['MT', 'ND'],
-  'MB' : ['ND', 'MN'],
-  'ON' : ['MN', 'MI', 'NY'],
-  'QC' : ['NY', 'VT', 'NH', 'ME'],
-  'NB' : ['ME'],
-
-  // #Then use states as keys
-  'WA' : ['BC'],
-  'ID' : ['BC'],
-  'MT' : ['BC', 'AB', 'SK'],
-  'ND' : ['SK', 'MB'],
-  'MN' : ['MB', 'ON'],
-  'MI' : ['ON'],
-  'NY' : ['ON', 'QC'],
-  'VT' : ['QC'],
-  'NH' : ['QC'],
-  'ME' : ['NB']
-}
-
-var borderButtons = {};
-
-var province_selected = false;
-var state_selected = false;
-
-$(document).ready(function(){
-  assignBordersToButtons();
-  bindBorderButtons();
-})
-
-function assignBordersToButtons(){
-  for( key in borders){
-    borderButtons[key] = [];
-    var buttonIds = borders[key];
-    for(var i = 0; i<buttonIds.length ; i++){
-      var button = document.getElementById(buttonIds[i]);
-      borderButtons[key].push(button);
-    }
-  }
-}
-
-function bindBorderButtons(){
-  for(key in borderButtons){
-    var clickedButton = document.getElementById(key);
-    var inactivatedButtons = borderButtons[key];
-
-    //set all buttons back to their default state
-    clickedButton.addEventListener('click', function(){
-      var buttons = document.getElementsByClassName("border-button");
-      for(var i = 0; i < buttons.length; i++){
-        className = buttons[i].className.replace("btn-success","");
-        className = className.replace("btn-primary","");
-        buttons[i].className = className;
-      }
+  function filter_crossings(){
+    var state = $("body").data('state');
+    var province = $("body").data('province');
+    $.get("filter_crossings", {state: state, province: province}, function(data){
+      populate_crossings(data);
     });
-
-    //add "btn-success" to classname of bordering buttons
-    for (var i = 0, n = inactivatedButtons.length; i<n; i++) {
-      var el = inactivatedButtons[i];
-      clickedButton.addEventListener('click', (function(i, el) { 
-        return function() {
-          el.className += " btn-success";
-        }
-      })(i, el), false);
-    }
   }
-}
 
 
+  function populate_crossings(data){
+    $("#crossings").html("");
+    if (!data){
+      $("#crossings").append("<h4 class=\"list-group-item-heading\"> Sorry </h4> <p class=\"list-group-item-text\" ")
+    }
+    $.each(data, function(i, crossing){
+      var list_div = "<a href=\"#\" data-id="+crossing['id']+" class=\"list-group-item crossing-selector\">\
+      <h4 class=\"list-group-item-heading\">"+crossing['title']+"</h4>\
+      <p class=\"list-group-item-text\">"+crossing['location']+"</p></a>";
 
+      $("#crossings").append(list_div);
+    });
+    $(".crossing-selector").click(function(){
+      $('.list-group-item').removeClass('active');
+      $(this).addClass("active");
+      requestData( $(this).data('id'), 'canada', false, wday);
+    });
+  }
+
+  function requestData(crossing_id, bound, commercial, wday, title){
+    <% url = BorderTimes::Application.routes.url_helpers %>
+    $.ajax({
+      url: "<%= url.chart_data_path %>",
+      type: "Get",
+      dataType: "json",
+      data: {
+        bound: bound, 
+        id: crossing_id,
+        commercial: commercial,
+        wday: wday
+      },
+      success: function(response, textStatus, xhr) {
+        drawChart(response);
+      }
+    })
+  }
+  var canvas = document.getElementById('chart');
+  var ctx = canvas.getContext("2d");
+  var chart = new Chart(ctx);
+  // function drawChart(response){
+    
+  //   data = {
+  //     labels: response.data.labels,
+  //     datasets: [
+  //       {
+  //         fillColor : "rgba(220,220,220,0.5)",
+  //         strokeColor : "rgba(220,220,220,1)",
+  //         pointColor : "rgba(220,220,220,1)",
+  //         pointStrokeColor : "#fff",
+  //         data : response.data.average
+  //       },
+
+  //       {
+  //       fillColor : "rgba(151,187,205,0.5)",
+  //       strokeColor : "rgba(151,187,205,1)",
+  //       pointColor : "rgba(151,187,205,1)",
+  //       pointStrokeColor : "#fff",
+  //       data : response.data.recent
+  //       } 
+  //     ]
+  //   }
+
+  //   options = {
+  //     scaleOverride : true,
+  //     scaleSteps : 6,
+  //     scaleStepWidth : 10,
+  //     scaleStartValue : 0,
+  //     scaleFontSize: 8,
+  //     pointDot: false
+  //   }
+  //   document.getElementById('chart-container').style.display = "block";
+  //   var myChart = chart.Line(data, options);
+  //   document.getElementById('chart-title').innerHTML = response.title;
+  // }
+  function drawChart(response){
+    data = {
+      labels: response.labels,
+      datasets: [
+        {
+          fillColor : "rgba(220,220,220,0.5)",
+          strokeColor : "rgba(220,220,220,1)",
+          pointColor : "rgba(220,220,220,1)",
+          pointStrokeColor : "#fff",
+          data : response.average
+        },
+
+        {
+        fillColor : "rgba(151,187,205,0.5)",
+        strokeColor : "rgba(151,187,205,1)",
+        pointColor : "rgba(151,187,205,1)",
+        pointStrokeColor : "#fff",
+        data : response.recent
+        } 
+      ]
+    }
+
+    options = {
+      scaleOverride : true,
+      scaleSteps : 6,
+      scaleStepWidth : 10,
+      scaleStartValue : 0,
+      scaleFontSize: 8,
+      pointDot: false
+    }
+    var canvas = document.getElementById("chart");
+    var ctx = canvas.getContext("2d");
+    var chart = new Chart(ctx);
+    chart.Line(data, options);    
+    }
+  
+});
