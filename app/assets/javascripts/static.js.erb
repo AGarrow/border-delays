@@ -1,5 +1,6 @@
 $(document).ready( function(){
   var d = new Date();
+  var today = d.getDay();
   var wday = d.getDay();
   var chart_bound = 'canada';
   var chart_commercial = false;
@@ -29,6 +30,7 @@ $(document).ready( function(){
     $(".day_select").removeClass('active');
     clicked_button.addClass('active');
     chart_wday = clicked_button.attr('value');
+    set_legend_text();
     requestData();
   });
 
@@ -60,6 +62,17 @@ $(document).ready( function(){
       toggle_bound_button();
     });
   };
+
+  function set_legend_text(){
+    var legend = $("#legend-recent");
+    if(chart_wday == today){
+      legend.text(" = Today");
+    }
+    else{
+      var weekday = $(".day_select.active").text()
+      legend.text(" = last "+weekday);
+    }
+  }
 
   function populate_crossings(data){
     $("#crossings").html("");
