@@ -1,6 +1,14 @@
 $(document).ready( function(){
   var d = new Date();
   var wday = d.getDay();
+  var chart_bound = 'canada';
+  var chart_commercial = false;
+  var chart_wday = d.getDay();
+  var chart_title;
+  var chart_crossing;
+
+  toggle_bound_button();
+
   $(".state").click(function(){
     $("body").data('state', $(this).attr('data'));
     $('.state').removeClass('active');
@@ -15,6 +23,15 @@ $(document).ready( function(){
     filter_crossings();    
   });
 
+
+  $(".day_select").click(function(){
+    var clicked_button = $(this);
+    $(".day_select").removeClass('active');
+    clicked_button.addClass('active');
+    chart_wday = clicked_button.attr('value');
+    requestData();
+  });
+
   function filter_crossings(){
     var state = $("body").data('state');
     var province = $("body").data('province');
@@ -23,6 +40,26 @@ $(document).ready( function(){
     });
   }
 
+
+
+  function toggle_bound_button(){
+    var bound_button = $("#bound_button");
+    var click_bound;
+    if(chart_bound == 'canada'){
+      bound_button.text('Canada => USA')
+      click_bound = 'usa'
+    }
+    else{
+      bound_button.text('USA => Canada');
+      click_bound = 'canada'
+    }
+    bound_button.click(function(){
+      bound_button.unbind();
+      chart_bound = click_bound;
+      requestData();
+      toggle_bound_button();
+    });
+  };
 
   function populate_crossings(data){
     $("#crossings").html("");
@@ -39,75 +76,43 @@ $(document).ready( function(){
     $(".crossing-selector").click(function(){
       $('.list-group-item').removeClass('active');
       $(this).addClass("active");
+      chart_crossing = $(this).data('id');
       requestData( $(this).data('id'), 'canada', false, wday);
     });
   }
 
-  function requestData(crossing_id, bound, commercial, wday, title){
+  function requestData(){
     <% url = BorderTimes::Application.routes.url_helpers %>
     $.ajax({
       url: "<%= url.chart_data_path %>",
       type: "Get",
       dataType: "json",
       data: {
-        bound: bound, 
-        id: crossing_id,
-        commercial: commercial,
-        wday: wday
+        bound: chart_bound, 
+        id: chart_crossing,
+        commercial: chart_commercial,
+        wday: chart_wday
       },
       success: function(response, textStatus, xhr) {
-        drawChart(response.data);
+        drawChart(response);
       }
     })
   }
   var canvas = document.getElementById('chart');
   var ctx = canvas.getContext("2d");
   var chart = new Chart(ctx);
-  // function drawChart(response){
-    
-  //   data = {
-  //     labels: response.data.labels,
-  //     datasets: [
-  //       {
-  //         fillColor : "rgba(220,220,220,0.5)",
-  //         strokeColor : "rgba(220,220,220,1)",
-  //         pointColor : "rgba(220,220,220,1)",
-  //         pointStrokeColor : "#fff",
-  //         data : response.data.average
-  //       },
 
-  //       {
-  //       fillColor : "rgba(151,187,205,0.5)",
-  //       strokeColor : "rgba(151,187,205,1)",
-  //       pointColor : "rgba(151,187,205,1)",
-  //       pointStrokeColor : "#fff",
-  //       data : response.data.recent
-  //       } 
-  //     ]
-  //   }
-
-  //   options = {
-  //     scaleOverride : true,
-  //     scaleSteps : 6,
-  //     scaleStepWidth : 10,
-  //     scaleStartValue : 0,
-  //     scaleFontSize: 8,
-  //     pointDot: false
-  //   }
-  //   document.getElementById('chart-container').style.display = "block";
-  //   var myChart = chart.Line(data, options);
-  //   document.getElementById('chart-title').innerHTML = response.title;
-  // }
   function drawChart(response){
+    
     data = {
-      labels: response.labels,
+      labels: response.data.labels,
       datasets: [
         {
           fillColor : "rgba(220,220,220,0.5)",
           strokeColor : "rgba(220,220,220,1)",
           pointColor : "rgba(220,220,220,1)",
           pointStrokeColor : "#fff",
-          data : response.average
+          data : response.data.average
         },
 
         {
@@ -115,7 +120,7 @@ $(document).ready( function(){
         strokeColor : "rgba(151,187,205,1)",
         pointColor : "rgba(151,187,205,1)",
         pointStrokeColor : "#fff",
-        data : response.recent
+        data : response.data.recent
         } 
       ]
     }
@@ -129,7 +134,10 @@ $(document).ready( function(){
       pointDot: false
     }
     document.getElementById('chart-container').style.display = "block";
-
+    $("#chart-title").html(response.title)
+    
+    var bound = (response.bound=="canada")? "United States => Canada" : "Canada => United States";
+    $("#bound").html(bound);
     var canvas = document.getElementById("chart");
     chart.Line(data, options);    
     }

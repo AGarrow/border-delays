@@ -45,7 +45,7 @@ class CrossingsController < ApplicationController
   def chart_data
     crossing = Crossing.find(params[:id])
     data = crossing.chart_data(params[:bound], params[:commercial], params[:wday])
-    response = {title: crossing.title, data: data}
+    response = {title: crossing.title, bound: params[:bound], data: data}
     respond_to do |format|
       format.js { render json: response}
       format.json { render json: response}  
