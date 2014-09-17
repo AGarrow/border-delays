@@ -71,7 +71,7 @@ class Crossing < ActiveRecord::Base
     end
     
     #get data for today's wait times
-    if Time.now == wday
+    if Time.now.wday == wday
 
       day = Time.now - 2.days
       recent_times = self.wait_times.where(
