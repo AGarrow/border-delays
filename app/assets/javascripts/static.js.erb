@@ -66,11 +66,11 @@ $(document).ready( function(){
   function set_legend_text(){
     var legend = $("#legend-recent");
     if(chart_wday == today){
-      legend.text(" = Today");
+      legend.text(" Today");
     }
     else{
       var weekday = $(".day_select.active").text()
-      legend.text(" = last "+weekday);
+      legend.text(" last "+weekday);
     }
   }
 
