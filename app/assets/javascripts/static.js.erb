@@ -48,11 +48,11 @@ $(document).ready( function(){
     var bound_button = $("#bound_button");
     var click_bound;
     if(chart_bound == 'canada'){
-      bound_button.text('Canada => USA')
+      bound_button.text('Canada --> USA')
       click_bound = 'usa'
     }
     else{
-      bound_button.text('USA => Canada');
+      bound_button.text('USA --> Canada');
       click_bound = 'canada'
     }
     bound_button.click(function(){
@@ -144,12 +144,13 @@ $(document).ready( function(){
       scaleStepWidth : 10,
       scaleStartValue : 0,
       scaleFontSize: 8,
-      pointDot: false
+      pointDot: false,
+      pointHitDetectionRadius : 20,
     }
     document.getElementById('chart-container').style.display = "block";
     $("#chart-title").html(response.title)
     
-    var bound = (response.bound=="canada")? "United States => Canada" : "Canada => United States";
+    var bound = (response.bound=="canada")? "United States --> Canada" : "Canada --> United States";
     $("#bound").html(bound);
     var canvas = document.getElementById("chart");
     chart.Line(data, options);    
