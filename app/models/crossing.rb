@@ -91,6 +91,7 @@ class Crossing < ActiveRecord::Base
         commercial,
         bound
         )
+    end
     response[:recent] = recent_times.map do |r|
       r.duration
     end
