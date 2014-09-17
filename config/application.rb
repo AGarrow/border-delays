@@ -61,10 +61,9 @@ module BorderTimes
 
     config.assets.precompile += ['crossings.js', 'static.js']
     config.assets.enabled = true
-    config.assets.paths << "#{Rails}/vendor/assets/fonts"
+    # config.assets.paths << "#{Rails}/vendor/assets/fonts"
     # Precompile additional assets
-    config.assets.precompile += %w( .svg .eot .woff .ttf )
+    # config.assets.precompile += %w( .svg .eot .woff .ttf )
 
-    config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
   end
 end
