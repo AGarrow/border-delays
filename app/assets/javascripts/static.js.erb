@@ -48,11 +48,9 @@ $(document).ready( function(){
     var bound_button = $("#bound_button");
     var click_bound;
     if(chart_bound == 'canada'){
-      bound_button.text('Canada --> USA')
       click_bound = 'usa'
     }
     else{
-      bound_button.text('USA --> Canada');
       click_bound = 'canada'
     }
     bound_button.click(function(){
