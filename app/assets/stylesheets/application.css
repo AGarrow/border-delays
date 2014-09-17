@@ -18,6 +18,20 @@
   color: #999999;
 }
 
+#bound_button_container{
+  position:absolute;
+  top:20px;
+  right:30px;
+}
+
+#legend-container{
+  position: absolute;
+  top:60px;
+  right:30px;
+  width:127px;
+  margin-top:10px;
+}
+
 html,
 body {
   height: 100%;
