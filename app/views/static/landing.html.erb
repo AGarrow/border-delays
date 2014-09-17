@@ -14,7 +14,6 @@
 </div>
 
 
-
 <div class="row">
   <container class="col-md-8 col-md-offset-2">
     <h4> Select a State... </h4>
@@ -38,41 +37,46 @@
 </div>
 
 <div class="row" id="chart-container"style="display: none;">
-  <div class="col-md-6 col-md-offset-3" >
+  <div class="col-md-8 col-md-offset-2" >
 
     <h2 style="text-align:center" id="chart-title"></h2>
     <h4 style="text-align:center" id="bound"> USA -> Canada </h4>
     <div class="rotate pull-left">Delay (minutes)</div> 
     <canvas class ="chart" id ="chart"> </canvas>
     <p style="text-align:center">Time</p>
-
-    <div class="col-md-10 col-md-offset-1">
-      <div class="btn-group btn-justified">
-        <% (0..6).each do |index| %>
-          <% if index == Time.now.wday %>
-            <button value=<%=index%> type="button" class="day_select btn btn-default active"><%= weekday(index) %></button>
-          <% else %>
-            <button value=<%=index%> type="button" class="day_select btn btn-default"><%= weekday(index) %></button>
-          <% end %> 
-
-        <% end %> 
-      </div>
+    <div class="btn-group" id='bound_button_container'>
+      <button id = 'bound_button' type="button" class="btn btn-primary">
+      </button>
     </div>
-
-  </div>
-  <div>
-    <div class="col-md-3"  style = "margin-left:0px; padding-left:0px;">
-      <div class="btn-group">
-        <button id = 'bound_button' type="button" class="btn btn-primary">
-        </button>
-      </div>
-    </div>
-    <div class="col-md-3" style="margin-top: 10px;">
+    <div id = "legend-container">
       <div class="average-color"></div>
-      <p class="key-words">  = Average </p>
+      <p class="key-words"> Average </p>
       <!-- </br> -->
       <div class="recent-color"></div>
-      <p class="key-words" id="legend-recent">  = Today </p>
+      <p class="key-words" id="legend-recent"> Today </p>
     </div>
+    
+  </div>
+    <container class="col-md-8 col-md-offset-2">
+      <div class="btn-group btn-group-justified ">
+        <% (0..6).each do |index| %>
+          <div class="btn-group">
+            <% if index == Time.now.wday %>
+              <button value=<%=index%> type="button" class="day_select btn btn-default active"><%= weekday(index) %></button>
+            <% else %>
+              <button value=<%=index%> type="button" class="day_select btn btn-default"><%= weekday(index) %></button>
+            <% end %> 
+          </div>
+        <% end %> 
+      </container>
+  </div>
+
+
+
+  <div>
+    <div class="col-md-3"  style = "margin-left:0px; padding-left:0px;">
+      
+    </div>
+    
   </div>
 </div>

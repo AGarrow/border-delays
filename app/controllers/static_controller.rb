@@ -1,3 +1,5 @@
+require 'geography'
+
 class StaticController < ApplicationController
   def landing
 
