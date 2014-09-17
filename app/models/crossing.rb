@@ -1,7 +1,7 @@
 require 'geography'
 class Crossing < ActiveRecord::Base
   attr_accessible :location, :title, :time_zone, :province, :state
-  validates_uniqueness_of :location, :title
+  validates_uniqueness_of :title
   has_many :wait_times
   has_many :averages
   before_create :assign_timezone
@@ -24,7 +24,9 @@ class Crossing < ActiveRecord::Base
 
 
   def self.find_or_create(title, location)
-    crossing = Crossing.where(:title => title, :location => location).first_or_create
+    province = location.scan(/[A-Z]{2}/).first
+    state = location.scan(/[A-Z]{2}/).second
+    crossing = Crossing.where(:title => title, :location => location, :state => state, :province => province).first_or_create
   end
 
   def assign_timezone
