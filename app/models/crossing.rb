@@ -26,14 +26,13 @@ class Crossing < ActiveRecord::Base
   def self.find_or_create(title, location)
     province = location.scan(/[A-Z]{2}/).first
     state = location.scan(/[A-Z]{2}/).second
+    title = title == "St. Stephen 3rd Bridge" ? "St.Stephen 3rd Bridge" : title
     crossing = Crossing.where(:title => title, :location => location, :state => state, :province => province).first_or_create
   end
 
   def assign_timezone
     state = /[A-Z]{2}$/.match(self.location).to_s
-    puts state
     self.time_zone = ZONES[state]
-    puts self.time_zone
   end
 
   def current_wait (bound, commercial)
