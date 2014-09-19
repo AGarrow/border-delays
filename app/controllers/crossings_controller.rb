@@ -46,6 +46,12 @@ class CrossingsController < ApplicationController
     crossing = Crossing.find(params[:id])
     data = crossing.chart_data(params[:bound], params[:commercial], params[:wday])
     response = {title: crossing.title, bound: params[:bound], data: data}
+    if crossing.created_at > Date.today.beginning_of_month then
+      response[:message] = "this crossing was added recently, and may not have enough relevant data"
+    end
+    if crossing.title.include? "Aldergrove" then
+      response[:message] = "we're seeing some wonky data from this crossing, and are looking into fixing it"
+    end
     respond_to do |format|
       format.js { render json: response}
       format.json { render json: response}  
