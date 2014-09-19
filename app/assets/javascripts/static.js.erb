@@ -85,6 +85,7 @@ $(document).ready( function(){
       $("#crossings").append(list_div);
     });
     $(".crossing-selector").click(function(){
+      $(".alert").remove();
       $('.list-group-item').removeClass('active');
       $(this).addClass("active");
       chart_crossing = $(this).data('id');
@@ -147,7 +148,9 @@ $(document).ready( function(){
     }
     document.getElementById('chart-container').style.display = "block";
     $("#chart-title").html(response.title)
-    
+    if(response.message){
+      $("#crossings").append("<div class=\"alert alert-danger\" role=\"alert\">"+response.message+"</div>");      
+    }
     var bound = (response.bound=="canada")? "United States --> Canada" : "Canada --> United States";
     $("#bound").html(bound);
     var canvas = document.getElementById("chart");
