@@ -148,7 +148,7 @@ $(document).ready( function(){
     }
     document.getElementById('chart-container').style.display = "block";
     $("#chart-title").html(response.title)
-    if(response.message){
+    if(response.message && $(".alert").length == 0){
       $("#crossings").append("<div class=\"alert alert-danger\" role=\"alert\">"+response.message+"</div>");      
     }
     var bound = (response.bound=="canada")? "United States --> Canada" : "Canada --> United States";
