@@ -85,13 +85,17 @@ class Crossing < ActiveRecord::Base
         )
     else
       day = Time.now - 8.days
-      recent_times = self.wait_times.where(
-        "created_at > ? AND wday = ? AND commercial = ? AND bound = ?", 
-        day.to_date.beginning_of_day, 
-        wday,
-        commercial,
-        bound
-        )
+      recent_times = []
+      (0..23).each do |hour|
+        recent_times << self.wait_times.where(
+          "created_at > ? AND wday = ? AND hour = ? AND commercial = ? AND bound = ?", 
+          day.to_date.beginning_of_day, 
+          wday,
+          hour,
+          commercial,
+          bound
+          ).first
+      end
     end
     response[:recent] = recent_times.map do |r|
       r.duration
