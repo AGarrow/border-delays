@@ -44,7 +44,7 @@ class CrossingsController < ApplicationController
 
   def chart_data
     crossing = Crossing.find(params[:id])
-    data = crossing.chart_data(params[:bound], params[:commercial], params[:wday])
+    data = crossing.chart_data(params[:bound], params[:commercial], params[:wday], params[:today])
     response = {title: crossing.title, bound: params[:bound], data: data}
     if crossing.created_at > Date.today.beginning_of_month then
       response[:message] = "this crossing was added recently, and may not have enough relevant data"

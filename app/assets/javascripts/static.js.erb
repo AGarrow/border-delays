@@ -5,6 +5,7 @@ $(document).ready( function(){
   var chart_bound = 'canada';
   var chart_commercial = false;
   var chart_wday = d.getDay();
+  var today_bool = true;
   var chart_title;
   var chart_crossing;
 
@@ -27,6 +28,7 @@ $(document).ready( function(){
 
   $(".day_select").click(function(){
     var clicked_button = $(this);
+    today_bool = false;
     $(".day_select").removeClass('active');
     clicked_button.addClass('active');
     chart_wday = clicked_button.attr('value');
@@ -63,7 +65,8 @@ $(document).ready( function(){
 
   function set_legend_text(){
     var legend = $("#legend-recent");
-    if(chart_wday == today){
+    alert(today_bool);
+    if(today_bool ){
       legend.text(" Today");
     }
     else{
@@ -103,7 +106,8 @@ $(document).ready( function(){
         bound: chart_bound, 
         id: chart_crossing,
         commercial: chart_commercial,
-        wday: chart_wday
+        wday: chart_wday,
+        today: today_bool
       },
       success: function(response, textStatus, xhr) {
         drawChart(response);
@@ -150,6 +154,13 @@ $(document).ready( function(){
     $("#chart-title").html(response.title)
     if(response.message && $(".alert").length == 0){
       $("#crossings").append("<div class=\"alert alert-danger\" role=\"alert\">"+response.message+"</div>");      
+    }
+    if(response.data.yesterday){
+      today_bool = true;
+      var old_today = $(".day_select.active");
+      // alert(old_today.text());
+      old_today.parent().prev().children().first().addClass("active");
+      old_today.removeClass("active");
     }
     var bound = (response.bound=="canada")? "United States --> Canada" : "Canada --> United States";
     $("#bound").html(bound);

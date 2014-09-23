@@ -49,13 +49,23 @@ class Crossing < ActiveRecord::Base
     end
   end
 
-  def chart_data(bound, commercial, wday)
-    
+  def chart_data(bound, commercial, wday, today)
+
+
     response = { 
       :labels => [],
       :average => [],
-      :recent => []
+      :recent => [],
+      :yesterday => false
     }
+
+    if today == 'true' then
+      Time.zone = self.time_zone
+      if Time.zone.now.wday != wday then
+        wday = Time.zone.now.wday
+        response[:yesterday] = true
+      end
+    end
     
     #get data for average wait times
     average = self.averages.where(:bound => bound, :commercial => commercial, :wday => wday).sort_by{|av| av.hour}
