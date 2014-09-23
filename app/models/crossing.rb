@@ -98,7 +98,7 @@ class Crossing < ActiveRecord::Base
       end
     end
     response[:recent] = recent_times.map do |r|
-      r.duration
+      r.duration unless r.nil?
     end
     response
 
