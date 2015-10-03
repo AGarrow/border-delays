@@ -38,24 +38,20 @@
 
 <div class="row" id="chart-container"style="display: none;">
   <div class="col-md-8 col-md-offset-2" >
-    <div class="title ">
-      <h2 style="text-align:center" id="chart-title"></h2>
-      <div class="col-md-2 col-md-offset-3 origin">
-        <%= image_tag "United States.png", size: "80x80", id: "us_icon" %>
-      </div>
-      <div class="col-md-2">
-        <%= image_tag "car_icon.png", size: "80x80" %>
-      </div>
-      <div class="col-md-2 destination">
-        <%= image_tag "Canada.png", size: "80x80", id: "canada_icon"%>
-      </div>
-    </div>
+    <div class="col-md-12" id="banner-container">
+        <div class="col-md-6 banner origin" id="us_icon" data-can="url('assets/Canada_from.png')"
+        data-us="url('assets/US_from.png')" style="background: url('assets/US_from.png'); background-size: 100% 100%; background-position: center;" >
+          <h1 class="banner-label"> From </h1>
+        </div> 
+        <div class="col-md-6 banner destination" id="canada_icon" data-can="url('assets/Canada_to.png')" data-us="url('assets/US_to.png')" style="background: url('assets/Canada_to.png'); background-size: 100% 100%; background-position: center;" >
+          <h1 class="banner-label"> To </h1>
+        </div>
 
+    </div>
     <svg class ="chart" id ="chart"> </svg>
     <p style="text-align:center">Time</p>
     <div class="btn-group" id='bound_button_container'>
-      <button id = 'bound_button' type="button" class="btn btn-primary"> Reverse Direction
-      </button>
+
     </div>
     <div id = "legend-container">
       <div class="average-color"></div>

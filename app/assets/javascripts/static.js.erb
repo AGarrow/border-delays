@@ -43,19 +43,20 @@ $(document).ready( function(){
   }
 
 
-  var usa_icon = $("#us_icon");
-  var canada_icon = $("#canada_icon");
+
   function toggle_bound_button(){
-    var bound_button = $("#bound_button");
+    var origin = $(".origin")[0];
+    var dest = $(".destination")[0];
+    var bound_button = $("#banner-container");
     var click_bound;
     if(chart_bound == 'canada'){
-      $(".origin").html(usa_icon);
-      $(".destination").html(canada_icon);
+      origin.style.backgroundImage = origin.getAttribute('data-us');
+      dest.style.backgroundImage = dest.getAttribute('data-can');
       click_bound = 'usa'
     }
     else{
-      $(".origin").html(canada_icon);
-      $(".destination").html(usa_icon);
+      origin.style.backgroundImage = origin.getAttribute('data-can');
+      dest.style.backgroundImage = dest.getAttribute('data-us')
       click_bound = 'canada'
     }
     bound_button.click(function(){

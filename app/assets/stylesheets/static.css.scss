@@ -41,15 +41,39 @@
 
 img {
   display: block;
+  position: absolute;
   margin-right: auto;
   margin-left: auto;
 }
+#right-arrow {
+  margin-left: 45%;
+}
 
-.title {
-  position: absolute;
-  top:0px;
-  bottom:0px;
-  left:0px;
-  right:0px;
-  height: 150px;
+.banner {
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  height: 60px;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: 80% 80%;
+}
+
+#bound_button {
+  margin-top: 0px;
+}
+ #crossings{
+  margin-bottom: 0px;
+ }
+
+.banner {
+  opacity: 0.8;
+}
+.banner-label {
+  text-shadow: 2px 2px black;
+  color: white;
+  opacity: 1.0;
+  margin-top: 10px;
+  text-align: center;
 }
