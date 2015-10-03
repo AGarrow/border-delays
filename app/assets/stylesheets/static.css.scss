@@ -4,3 +4,37 @@
 .border-button{
   margin-top: 10px;
 }
+
+.domain{
+  fill: none;
+  stroke: black;
+  stroke-width: 1;
+}
+
+.grid .tick {
+    stroke: lightgrey;
+    opacity: 0.7;
+}
+.grid path {
+      stroke-width: 1;
+}
+
+#legend-container { 
+  background-color: white;
+}
+
+.chart-label {
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+}
+
+.focus circle {
+  fill: none;
+  stroke: grey;
+}
+
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
