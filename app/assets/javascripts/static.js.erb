@@ -135,7 +135,7 @@ $(document).ready( function(){
       .domain([format.parse("0"), format.parse("23")]);
     yScale = d3.scale.linear()
       .range([HEIGHT - MARGINS.top, MARGINS.bottom])
-      .domain([0,d3.max(response.data.average) + 10]);
+      .domain([0,d3.max(response.data.average.append(response.data.recent)) + 10]);
 
     d3.select("svg").attr("width", WIDTH).attr("height", HEIGHT)
 
