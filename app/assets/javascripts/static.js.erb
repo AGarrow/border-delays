@@ -43,14 +43,19 @@ $(document).ready( function(){
   }
 
 
-
+  var usa_icon = $("#us_icon");
+  var canada_icon = $("#canada_icon");
   function toggle_bound_button(){
     var bound_button = $("#bound_button");
     var click_bound;
     if(chart_bound == 'canada'){
+      $(".origin").html(usa_icon);
+      $(".destination").html(canada_icon);
       click_bound = 'usa'
     }
     else{
+      $(".origin").html(canada_icon);
+      $(".destination").html(usa_icon);
       click_bound = 'canada'
     }
     bound_button.click(function(){
@@ -79,7 +84,6 @@ $(document).ready( function(){
     }
     $.each(data, function(i, crossing){
       var list_div = "<a href=\"#\" data-id="+crossing['id']+" class=\"list-group-item crossing-selector\">\
-      <h4 class=\"list-group-item-heading\">"+crossing['title']+"</h4>\
       <p class=\"list-group-item-text\">"+crossing['location']+"</p></a>";
 
       $("#crossings").append(list_div);
