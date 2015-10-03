@@ -38,3 +38,18 @@
   fill: none;
   pointer-events: all;
 }
+
+img {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.title {
+  position: absolute;
+  top:0px;
+  bottom:0px;
+  left:0px;
+  right:0px;
+  height: 150px;
+}
