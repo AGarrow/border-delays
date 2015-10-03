@@ -84,7 +84,7 @@ $(document).ready( function(){
     }
     $.each(data, function(i, crossing){
       var list_div = "<a href=\"#\" data-id="+crossing['id']+" class=\"list-group-item crossing-selector\">\
-      <p class=\"list-group-item-text\">"+crossing['location']+"</p></a>";
+      <p class=\"list-group-item-text\"><b>"+crossing['title']+'</b></p>'+'<p class=\"list-group-item-text\">'+crossing['location']+"</p></a>";
 
       $("#crossings").append(list_div);
     });
