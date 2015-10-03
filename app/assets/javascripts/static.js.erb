@@ -110,51 +110,178 @@ $(document).ready( function(){
       }
     })
   }
-  var canvas = document.getElementById('chart');
-  var ctx = canvas.getContext("2d");
-  var chart = new Chart(ctx);
+  // var canvas = document.getElementById('chart');
+  // var ctx = canvas.getContext("2d");
+  // var chart = new Chart(ctx);
 
   function drawChart(response){
+    d3.select("svg").selectAll("*").remove()
+
+    var format = d3.time.format("%H"),
+      bisectTime = d3.bisector(function(d) { return d; }).left;
+
+    var chart_elem = d3.select("#chart"),
+      WIDTH = $(".list-group-item")[0].offsetWidth,
+      HEIGHT = 500,
+      MARGINS = {
+        top: 20,
+        right: 20,
+        bottom: 20,
+        left: 50
+      },
+
+    xScale = d3.time.scale()
+      .range([MARGINS.left, WIDTH - MARGINS.right])
+      .domain([format.parse("0"), format.parse("23")]);
+    yScale = d3.scale.linear()
+      .range([HEIGHT - MARGINS.top, MARGINS.bottom])
+      .domain([0,d3.max(response.data.average) + 10]);
+
+    d3.select("svg").attr("width", WIDTH).attr("height", HEIGHT)
+
+    xAxis = d3.svg.axis().scale(xScale).ticks(12);
+    yAxis = d3.svg.axis().scale(yScale).orient("left").tickSize(-WIDTH, 0, 0);
+    chart_elem.append("svg:g")
+      .attr("transform", "translate(0,"+ (HEIGHT - MARGINS.bottom) + ")")
+      .attr("class", "grid")
+      .call(xAxis);
+    chart_elem.append("svg:g")
+      .attr("class", "grid")
+      .attr("transform", "translate(" + (MARGINS.left) + ",0"+")")
+      .call(yAxis);
+
+    chart_elem.append("text")
+      .attr("class", "y chart-label")
+      .attr("text-anchor", "end")
+      .attr("font-size", "13px")
+      .attr("y", 0)
+      .attr("dy", ".75em")
+      .attr("x", -(HEIGHT+MARGINS.top+MARGINS.bottom)/2)
+      .attr("dx", ".75em")
+      .attr("transform", "rotate(-90)")
+      .text("Delay (Minutes)");
+
+    chart_elem.append("text")
+      .attr("class", "x chart-label")
+      .attr("text-anchor", "end")
+      .attr("font-size", "13px")
+      .attr("y", -HEIGHT+20)
+      .attr("dy", ".75em")
+      .text("Delay (Minutes)");
+
+    var area = d3.svg.area().interpolate("basis")
+      .x( function(d, i) { return xScale( format.parse(i.toString())) })
+      .y0(HEIGHT - 20)
+      .y1( function(d) { return yScale(d) });
+
+
+    var line = d3.svg.line().interpolate("basis")
+      .x( function(d, i) { return xScale( format.parse(i.toString()) ) })
+      .y( function(d) { return yScale(d) });
+
+
+
+    chart_elem.append("g").selectAll("path")
+      .data([response.data.average])
+      .enter()
+        .append("path")
+        .attr("d", line)
+        .attr("fill", "none")
+        .attr("stroke" , "#B20000")
+        .attr("stroke-width", 4);
+
+    chart_elem.append("path")
+      .data([response.data.average])
+      .attr("fill", "red")
+      .attr("opacity", 0.5)
+      .attr("d", area);
+
+    chart_elem.append("path")
+      .data([response.data.average])
+      .attr("fill", "red")
+      .attr("opacity", 0.7)
+      .attr("d", area);
+
+    chart_elem.append("g").selectAll("path")
+      .data([response.data.recent])
+      .enter()
+        .append("path")
+        .attr("d", line)
+        .attr("fill", "none")
+        .attr("stroke" , "#0000B2")
+        .attr("stroke-width", 4);
+
+
+    var focus = chart_elem.append("g")
+        .attr("class", "focus")
+        .style("display", "none");
+
+    focus.append("circle")
+        .attr("r", 4.5);
+
+    focus.append("text")
+        .attr("x", 9)
+        .attr("dy", ".35em");
+
+
+    chart_elem.append("rect")
+          .attr("class", "overlay")
+          .attr("width", WIDTH)
+          .attr("height", HEIGHT)
+          .on("mouseover", function() { focus.style("display", null); })
+          .on("mouseout", function() { focus.style("display", "none"); })
+          .on("mousemove", mousemove);
+
+      function mousemove() {
+        var x0 = xScale.invert(d3.mouse(this)[0].toString()),
+            i = bisectTime(response.data.average, x0, 1),
+            d0 = response.data.average[i - 1],
+            d1 = response.data.average[i],
+            d = x0 - d0 > d1 - x0 ? d1 : d0;
+        focus.attr("transform", "translate(" + xScale(d.toString()) + "," + yScale(d) + ")");
+        focus.select("text").text("time");
+      }
+
     
-    data = {
-      labels: response.data.labels,
-      datasets: [
-        {
-          fillColor : "rgba(220,220,220,0.5)",
-          strokeColor : "rgba(220,220,220,1)",
-          pointColor : "rgba(220,220,220,1)",
-          pointStrokeColor : "#fff",
-          data : response.data.average
-        },
+    // data = {
+    //   labels: response.data.labels,
+    //   datasets: [
+    //     {
+    //       fillColor : "rgba(220,220,220,0.5)",
+    //       strokeColor : "rgba(220,220,220,1)",
+    //       pointColor : "rgba(220,220,220,1)",
+    //       pointStrokeColor : "#fff",
+    //       data : response.data.average
+    //     },
 
-        {
-        fillColor : "rgba(151,187,205,0.5)",
-        strokeColor : "rgba(151,187,205,1)",
-        pointColor : "rgba(151,187,205,1)",
-        pointStrokeColor : "#fff",
-        data : response.data.recent
-        } 
-      ]
-    }
+    //     {
+    //     fillColor : "rgba(151,187,205,0.5)",
+    //     strokeColor : "rgba(151,187,205,1)",
+    //     pointColor : "rgba(151,187,205,1)",
+    //     pointStrokeColor : "#fff",
+    //     data : response.data.recent
+    //     } 
+    //   ]
+    // }
 
-    options = {
-      scaleOverride : true,
-      scaleSteps : 6,
-      scaleStepWidth : 10,
-      scaleStartValue : 0,
-      scaleFontSize: 8,
-      pointDot: false,
-      pointHitDetectionRadius : 20,
-    }
+    // options = {
+    //   scaleOverride : true,
+    //   scaleSteps : 6,
+    //   scaleStepWidth : 10,
+    //   scaleStartValue : 0,
+    //   scaleFontSize: 8,
+    //   pointDot: false,
+    //   pointHitDetectionRadius : 20,
+    // }
     document.getElementById('chart-container').style.display = "block";
-    $("#chart-title").html(response.title)
-    if(response.message && $(".alert").length == 0){
-      $("#crossings").append("<div class=\"alert alert-danger\" role=\"alert\">"+response.message+"</div>");      
-    }
-    var bound = (response.bound=="canada")? "United States --> Canada" : "Canada --> United States";
-    $("#bound").html(bound);
-    var canvas = document.getElementById("chart");
-    chart.Line(data, options);    
+    // $("#chart-title").html(response.title)
+    // if(response.message && $(".alert").length == 0){
+    //   $("#crossings").append("<div class=\"alert alert-danger\" role=\"alert\">"+response.message+"</div>");      
+    // }
+    // var bound = (response.bound=="canada")? "United States --> Canada" : "Canada --> United States";
+    // $("#bound").html(bound);
+    // var canvas = document.getElementById("chart");
+    // chart.Line(data, options);    
     }
   
 });
