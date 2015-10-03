@@ -144,7 +144,7 @@ $(document).ready( function(){
     d3.select("svg").attr("width", WIDTH).attr("height", HEIGHT)
 
     xAxis = d3.svg.axis().scale(xScale).ticks(12).tickFormat(d3.time.format("%I %p"));
-    yAxis = d3.svg.axis().scale(yScale).orient("left").tickSize(-WIDTH, 0, 0);
+    yAxis = d3.svg.axis().scale(yScale).orient("left").tickSize(70-WIDTH, 0, 0);
     chart_elem.append("svg:g")
       .attr("transform", "translate(0,"+ (HEIGHT - MARGINS.bottom) + ")")
       .attr("class", "grid")
