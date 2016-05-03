@@ -40,6 +40,7 @@ $(document).ready( function(){
     $.get("filter_crossings", {state: state, province: province}, function(data){
       populate_crossings(data);
     });
+    $("#loading").toggle()
   }
 
 
@@ -120,6 +121,7 @@ $(document).ready( function(){
   // var chart = new Chart(ctx);
 
   function drawChart(response){
+    $("#loading").toggle();
     d3.select("svg").selectAll("*").remove()
 
     var format = d3.time.format("%H"),
