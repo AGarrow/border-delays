@@ -31,7 +31,7 @@ production:
 
 development:
   adapter: mysql
-  encoding: unicode
+  encoding: utf8
   database: border_times
   pool: 5
   timeout: 5000
