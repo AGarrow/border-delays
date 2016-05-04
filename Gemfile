@@ -21,7 +21,6 @@ gem 'nokogiri'
   # gem 'twitter-bootstrap-rails'
   
   gem 'less-rails'
-  gem 'therubyracer'
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby
 
@@ -29,6 +28,8 @@ gem 'nokogiri'
 # end
 group :development do 
   gem 'sqlite3'
+  gem 'therubyracer'
+
 end
 gem 'jquery-rails'
 
