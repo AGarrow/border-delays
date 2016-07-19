@@ -5,7 +5,7 @@ gem 'rails', '3.2.13'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'mysql'
+# gem 'mysql'
 
 gem 'nokogiri'
 
@@ -26,6 +26,7 @@ gem 'nokogiri'
   
   gem 'therubyracer'
   gem 'uglifier', '>= 1.0.3'
+  gem 'activerecord-postgresql-adapter'
 
 # end
 group :development do 
