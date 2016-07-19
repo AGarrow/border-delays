@@ -5,8 +5,8 @@ namespace :scrape do
   desc "Scrape the Travel.gc.ca site for wait times"
 
   task times: :environment do   
-    canada_bound_source = 'http://travel.gc.ca/vt/dynamic/eng/border-times.aspx'
-    usa_bound_source = 'http://travel.gc.ca/travelling/border-times-us'
+    canada_bound_source = 'https://travel.gc.ca/vt/dynamic/eng/border-times.aspx'
+    usa_bound_source = 'https://travel.gc.ca/travelling/border-times-us'
     
     scrape(canada_bound_source, 'canada')
     scrape(usa_bound_source, 'usa')
