@@ -28,7 +28,7 @@ def scrape(source, bound)
       # commercial = 0 if /not applicable/i.match(commercial.text)
       WaitTime.create({
         :bound => bound.strip,
-        :duration => commercial.text,
+        :duration => parse_time(commercial.text),
         :commercial => true,
         :crossing_id => crossing.id
         })
@@ -36,10 +36,23 @@ def scrape(source, bound)
     unless travellers.text.include? 'Not applicable' then
       WaitTime.create({
         :bound => bound.strip,
-        :duration => travellers.text,
+        :duration => parse_time(travellers.text),
         :commercial => false,
         :crossing_id => crossing.id
         })    
     end
   end
 end
+
+def parse_time(text)
+    unless text =~ /[Mm]inute/
+      return 0
+    end
+    minutes = Integer(/(\d+) [Mm]inute/.match(text)[1])
+    if text.include? "hour"
+      hours = Integer(/(\d) [Hh]our/.match(text)[1])
+      return (hours*60)+minutes
+    else
+      return minutes
+    end
+  end
