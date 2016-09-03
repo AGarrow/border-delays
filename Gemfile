@@ -7,6 +7,7 @@ gem 'rails', '3.2.13'
 
 # gem 'mysql'
 
+gem 'activerecord-postgresql-adapter'
 gem 'nokogiri'
 
 # gem 'bootstrap-sass', :github => 'thomas-mcdonald/bootstrap-sass'

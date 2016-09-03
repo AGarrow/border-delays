@@ -21,6 +21,10 @@ def scrape(source, bound)
 
   crossings.each do |row|
     info, commercial, travellers = row.xpath('.//td')
+    if source == 'https://travel.gc.ca/travelling/border-times-us' then
+      puts travellers
+      puts parse_time(travellers.text)
+    end
     title = info.xpath('.//strong').text
     location = info.xpath('./text()')[0].text    
     crossing = Crossing.find_or_create(title.strip, location.strip)
@@ -42,13 +46,16 @@ def scrape(source, bound)
         })    
     end
   end
+  if source == 'https://travel.gc.ca/travelling/border-times-us' then
+    puts '------------------------------'
+  end
 end
 
 def parse_time(text)
-    unless text =~ /[Mm]inute/
+    unless text =~ /[Mm]in(s|ute)?/
       return 0
     end
-    minutes = Integer(/(\d+) [Mm]inute/.match(text)[1])
+    minutes = Integer(/(\d+) [Mm]in(s|ute)?/.match(text)[1])
     if text.include? "hour"
       hours = Integer(/(\d) [Hh]our/.match(text)[1])
       return (hours*60)+minutes
