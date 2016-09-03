@@ -5,12 +5,8 @@ gem 'rails', '3.2.13'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-<<<<<<< HEAD
-gem 'mysql'
-=======
-# gem 'mysql'
->>>>>>> 30620d240927b1e3e348d1372f1102c161f6f7de
 
+gem 'activerecord-postgresql-adapter'
 gem 'nokogiri'
 
 # gem 'bootstrap-sass', :github => 'thomas-mcdonald/bootstrap-sass'
