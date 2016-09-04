@@ -86,8 +86,6 @@ class Crossing < ActiveRecord::Base
         )
     else
       day = Time.now - 7.days
-      # recent_times = []
-      # (0..23).each do |hour|
       recent_times = self.wait_times.where(
         "created_at > ? AND wday = ? AND commercial = ? AND bound = ?", 
         day.utc, 
@@ -95,15 +93,13 @@ class Crossing < ActiveRecord::Base
         commercial,
         bound
         )
-      # end
     end
-    # recent_times.uniq! { |t| t.hour }
+    recent_times.uniq! { |t| t.hour }
     recent_times.sort_by!{ |t| t.hour }
     response[:recent] = recent_times.map do |r|
       r.duration unless r.nil?
     end
     response
-    # recent_times 
   end
 
   def current_average(bound, commercial)
