@@ -50,7 +50,8 @@ class Crossing < ActiveRecord::Base
   end
 
   def chart_data(bound, commercial, wday)
-    
+    Time.zone = self.time_zone
+
     response = { 
       :labels => [],
       :average => [],
@@ -73,7 +74,7 @@ class Crossing < ActiveRecord::Base
     
     #get data for today's wait times
 
-    if Time.now.wday.to_i == wday.to_i
+    if Time.zone.now.wday.to_i == wday.to_i
       day = Time.now - 2.days
       recent_times = self.wait_times.where(
         "created_at > ? AND wday = ? AND hour <= ? AND commercial = ? AND bound = ?", 
@@ -84,24 +85,25 @@ class Crossing < ActiveRecord::Base
         bound
         )
     else
-      day = Time.now - 8.days
-      recent_times = []
-      (0..23).each do |hour|
-        recent_times << self.wait_times.where(
-          "created_at > ? AND wday = ? AND hour = ? AND commercial = ? AND bound = ?", 
-          day.to_date.beginning_of_day, 
-          wday,
-          hour,
-          commercial,
-          bound
-          ).first
-      end
+      day = Time.now - 7.days
+      # recent_times = []
+      # (0..23).each do |hour|
+      recent_times = self.wait_times.where(
+        "created_at > ? AND wday = ? AND commercial = ? AND bound = ?", 
+        day.utc, 
+        wday,
+        commercial,
+        bound
+        )
+      # end
     end
+    # recent_times.uniq! { |t| t.hour }
+    recent_times.sort_by!{ |t| t.hour }
     response[:recent] = recent_times.map do |r|
       r.duration unless r.nil?
     end
     response
-
+    # recent_times 
   end
 
   def current_average(bound, commercial)
