@@ -46,8 +46,8 @@ class CrossingsController < ApplicationController
     crossing = Crossing.find(params[:id])
     data = crossing.chart_data(params[:bound], params[:commercial], params[:wday])
     response = {title: crossing.title, bound: params[:bound], data: data}
-    if params[:wday] == '6' and Time.now < Date.parse('2016-09-10 00:00:00') then
-      response[:message] = "Due to a brief outage, certain wait times for last saturday are not available, sorry!"
+    if (params[:wday] == '6' or params[:wday] == '0' or params[:wday] =='1') and Time.now < Date.parse('2016-09-12 00:00:00') then
+      response[:message] = "Due to a brief outage, certain wait times for this day last week are not available, sorry!"
     end
     respond_to do |format|
       format.js { render json: response}

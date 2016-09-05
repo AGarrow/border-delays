@@ -21,10 +21,6 @@ def scrape(source, bound)
 
   crossings.each do |row|
     info, commercial, travellers = row.xpath('.//td')
-    if source == 'https://travel.gc.ca/travelling/border-times-us' then
-      puts travellers
-      puts parse_time(travellers.text)
-    end
     title = info.xpath('.//strong').text
     location = info.xpath('./text()')[0].text    
     crossing = Crossing.find_or_create(title.strip, location.strip)
@@ -45,9 +41,6 @@ def scrape(source, bound)
         :crossing_id => crossing.id
         })    
     end
-  end
-  if source == 'https://travel.gc.ca/travelling/border-times-us' then
-    puts '------------------------------'
   end
 end
 
